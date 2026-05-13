@@ -1,29 +1,24 @@
-import "./index.css";
+import Navbar from "./components/Navbar";
+import Cursor from "./components/Cursor";
+
+import Hero from "./sections/Hero";
+import About from "./sections/About";
+import Projects from "./sections/Projects";
+import Skills from "./sections/Skills";
+import Contact from "./sections/Contact";
 
 function App() {
   return (
-    <main className="hero">
-      <div className="overlay"></div>
+    <>
+      <Cursor />
+      <Navbar />
 
-      <section className="hero-content">
-        <p className="tag">Frontend Developer</p>
-
-        <h1>
-          SUMIT <br />
-          VISHNU
-        </h1>
-
-        <p className="description">
-          Building futuristic digital experiences with React,
-          motion design, and modern web technologies.
-        </p>
-
-        <div className="buttons">
-          <button>View Projects</button>
-          <button className="secondary">Contact Me</button>
-        </div>
-      </section>
-    </main>
+      <Hero />
+      <About />
+      <Projects />
+      <Skills />
+      <Contact />
+    </>
   );
 }
 
