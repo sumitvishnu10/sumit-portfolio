@@ -1,0 +1,17 @@
+<svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Feather Pointer (Filled with light purple/blue) -->
+  <g transform="translate(1,1)">
+    <!-- Main feather body -->
+    <path d="M0 0 C 10 -2 25 10 32 24 C 35 32 36 38 36 40 C 34 38 28 33 24 32 C 10 25 -2 10 0 0 Z" fill="#9696FF" stroke="#0A0A5A" stroke-width="2" stroke-linejoin="round"/>
+    <!-- Central quill -->
+    <path d="M0 0 C 10 10 20 20 36 40" stroke="#0A0A5A" stroke-width="2"/>
+    <!-- Left side details -->
+    <path d="M6 15 L 13 18" stroke="#0A0A5A" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M10 24 L 18 26" stroke="#0A0A5A" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M17 31 L 24 32" stroke="#0A0A5A" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- Right side details -->
+    <path d="M15 6 L 18 13" stroke="#0A0A5A" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M24 10 L 26 18" stroke="#0A0A5A" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M31 17 L 32 24" stroke="#0A0A5A" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+</svg>

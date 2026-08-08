@@ -1,24 +1,25 @@
-import Navbar from "./components/Navbar";
-import Cursor from "./components/Cursor";
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import SmoothScroll from './components/ui/SmoothScroll';
+import CustomCursor from './components/ui/CustomCursor';
+import Home from './pages/Home';
+import ProjectDetail from './pages/ProjectDetail';
 
-import Hero from "./sections/Hero";
-import About from "./sections/About";
-import Projects from "./sections/Projects";
-import Skills from "./sections/Skills";
-import Contact from "./sections/Contact";
+gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   return (
-    <>
-      <Cursor />
-      <Navbar />
-
-      <Hero />
-      <About />
-      <Projects />
-      <Skills />
-      <Contact />
-    </>
+    <BrowserRouter>
+      <CustomCursor />
+      <SmoothScroll>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/project/:id" element={<ProjectDetail />} />
+        </Routes>
+      </SmoothScroll>
+    </BrowserRouter>
   );
 }
 
