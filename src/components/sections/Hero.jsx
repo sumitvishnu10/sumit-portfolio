@@ -15,11 +15,10 @@ export default function Hero() {
       const tl = gsap.timeline();
       
       // Setup Initial States
-      gsap.set('.hero-content-elem', { opacity: 0, y: 30 });
+      gsap.set('.hero-content-elem', { opacity: 0, y: 20 });
       gsap.set('.layer', { opacity: 0 });
       gsap.set('.intro-overlay', { backgroundColor: '#000' });
       gsap.set('.energy-line', { scaleX: 0, opacity: 1, transformOrigin: 'left center' });
-      gsap.set('.hero-sky', { scale: 1.05 });
       
       // Split text for main title
       const titleText = new SplitType('.hero-main-title', { types: 'lines,words' });
@@ -58,20 +57,34 @@ export default function Hero() {
       .to('.hero-content-elem', {
         opacity: 1,
         y: 0,
-        duration: 1,
-        stagger: 0.15,
-        ease: 'power3.out'
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power2.out'
       }, "-=1.2");
 
       if (!prefersReducedMotion) {
-        // 2. HERO LANDSCAPE PARALLAX (Scroll-Based)
+        // 2. HERO LANDSCAPE PARALLAX & CAMERA FEEL (Scroll-Based)
+        // Camera scale feel
+        gsap.to('.hero-landscape-container', {
+          scale: 1.03,
+          y: '5%',
+          ease: 'none',
+          scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
+        });
+
+        // Layer parallax (extremely subtle)
         gsap.to('.hero-sky', {
-          y: '20%',
+          y: '15%',
+          ease: 'none',
+          scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
+        });
+        gsap.to('.hero-clouds', {
+          y: '12%',
           ease: 'none',
           scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
         });
         gsap.to('.hero-mountains', {
-          y: '12%',
+          y: '8%',
           ease: 'none',
           scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
         });
@@ -80,36 +93,42 @@ export default function Hero() {
           ease: 'none',
           scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
         });
-        gsap.to('.hero-grass-background', {
+        gsap.to('.hero-grass-background, .hero-grass-middle, .hero-road', {
+          y: '2%',
+          ease: 'none',
+          scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
+        });
+        gsap.to('.hero-grass-foreground', {
           y: '-5%',
           ease: 'none',
           scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
         });
-        gsap.to('.hero-grass-foreground', {
-          y: '-15%',
-          ease: 'none',
-          scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
-        });
         gsap.to('.hero-foreground', {
-          y: '-25%',
+          y: '-15%',
           opacity: 0,
           ease: 'none',
           scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
         });
-
-        // 3. CLOUD WIND MOVEMENT
-        gsap.to('.hero-clouds', {
-          x: '5%',
-          duration: 30,
-          repeat: -1,
-          yoyo: true,
-          ease: 'none'
+        
+        // Sunlight scroll behavior
+        gsap.to('.hero-sun-wrapper', {
+          opacity: 0,
+          y: '10%',
+          ease: 'none',
+          scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: true }
         });
 
-        // 4. GRASS WIND EFFECT
+        // 3. CLOUD WIND MOVEMENT (Extremely slow, infinite drift)
+        gsap.fromTo('.hero-clouds', 
+          { x: '-2%' },
+          { x: '2%', duration: 60, repeat: -1, ease: 'none', yoyo: true }
+        );
+
+        // 4. GRASS WIND EFFECT (Extremely subtle)
         gsap.to('.hero-grass-foreground', {
-          skewX: 1.5,
-          rotation: 0.5,
+          rotation: 1,
+          skewX: 0.5,
+          x: 2,
           duration: 4,
           repeat: -1,
           yoyo: true,
@@ -117,9 +136,10 @@ export default function Hero() {
           transformOrigin: 'bottom center'
         });
         gsap.to('.hero-grass-middle', {
-          skewX: -1,
-          rotation: -0.5,
-          duration: 5,
+          rotation: -0.8,
+          skewX: -0.5,
+          x: -1,
+          duration: 4.5,
           delay: 0.5,
           repeat: -1,
           yoyo: true,
@@ -127,8 +147,9 @@ export default function Hero() {
           transformOrigin: 'bottom center'
         });
         gsap.to('.hero-grass-background', {
-          skewX: 1,
-          duration: 6,
+          rotation: 0.5,
+          skewX: 0.2,
+          duration: 5,
           delay: 1,
           repeat: -1,
           yoyo: true,
@@ -136,11 +157,21 @@ export default function Hero() {
           transformOrigin: 'bottom center'
         });
 
-        // 8. SUNLIGHT / ATMOSPHERE
+        // 5. WIND WAVE
+        gsap.to('.wind-wave', {
+          x: '100vw',
+          opacity: 0.05,
+          duration: 8,
+          repeat: -1,
+          ease: 'none',
+          delay: 2
+        });
+
+        // 6. SUNLIGHT / ATMOSPHERE (Soft breathing)
+        gsap.set('.hero-sun', { opacity: 0.12 });
         gsap.to('.hero-sun', {
-          scale: 1.05,
-          opacity: 0.9,
-          duration: 4,
+          opacity: 0.16,
+          duration: 10,
           repeat: -1,
           yoyo: true,
           ease: 'sine.inOut'
@@ -185,35 +216,44 @@ export default function Hero() {
         }}></div>
       </div>
 
-      <div className="layer hero-sky" style={{ 
-        position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-        backgroundImage: "url('/assets/hero_base.png')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        zIndex: 1
-      }}></div>
-      <div className="layer hero-clouds" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 2 }}></div>
-      <div className="layer hero-mountains" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 3 }}></div>
-      <div className="layer hero-trees" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 4 }}></div>
-      
-      <div className="layer hero-grass-background" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 5 }}></div>
-      <div className="layer hero-grass-middle" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 6 }}></div>
-      <div className="layer hero-grass-foreground" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 8 }}></div>
-      
-      <div className="layer hero-road" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 7 }}></div>
-      <div className="layer hero-sun" style={{ 
-        position: 'absolute', 
-        top: '15%', 
-        right: '15%', 
-        width: '150px', 
-        height: '150px', 
-        borderRadius: '50%', 
-        backgroundColor: 'var(--color-warm-sunlight)',
-        boxShadow: '0 0 100px var(--color-warm-sunlight)',
-        pointerEvents: 'none',
-        zIndex: 9
-      }}></div>
+      <div className="hero-landscape-container" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, overflow: 'hidden' }}>
+        <div className="layer hero-sky" style={{ 
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: "url('/assets/hero_base.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 1
+        }}></div>
+        <div className="layer hero-clouds" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 2 }}></div>
+        <div className="layer hero-mountains" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 3 }}></div>
+        <div className="layer hero-trees" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 4 }}></div>
+        
+        <div className="layer hero-grass-background" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 5 }}></div>
+        <div className="layer hero-grass-middle" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 6 }}></div>
+        <div className="layer hero-road" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 7 }}></div>
+        <div className="layer hero-grass-foreground" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 8 }}></div>
+        
+        <div className="wind-wave" style={{ 
+          position: 'absolute', top: '50%', left: '-20%', width: '30%', height: '50%',
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)',
+          transform: 'skewX(-20deg)',
+          pointerEvents: 'none',
+          opacity: 0,
+          zIndex: 9
+        }}></div>
+
+        <div className="layer hero-sun-wrapper" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 10, pointerEvents: 'none' }}>
+          <div className="layer hero-sun" style={{ 
+            position: 'absolute', 
+            top: 0, 
+            left: 0, 
+            width: '100%', 
+            height: '100%', 
+            background: 'radial-gradient(circle at 35% 20%, rgba(244, 215, 154, 1) 0%, rgba(244, 215, 154, 0.4) 30%, rgba(244, 215, 154, 0.1) 60%, transparent 80%)',
+          }}></div>
+        </div>
+      </div>
 
       {/* Foreground Content */}
       <div className="hero-foreground" style={{
@@ -226,27 +266,30 @@ export default function Hero() {
       }}>
         <div className="hero-content-elem" style={{
           fontFamily: 'var(--font-primary)',
-          fontSize: '0.8rem',
+          fontSize: '1.2rem',
           textTransform: 'uppercase',
           letterSpacing: '4px',
           fontWeight: 600,
           color: 'var(--color-primary)',
-          marginBottom: '2rem'
+          marginBottom: '1rem'
         }}>
-          SUMIT VISHNU M
+          Full-Stack Developer
         </div>
 
         <h1 className="hero-main-title" style={{
           fontFamily: 'var(--font-secondary)',
-          fontSize: 'clamp(3rem, 7vw, 7rem)',
+          fontStyle: 'italic',
+          fontSize: 'clamp(4rem, 10vw, 8rem)',
           fontWeight: 500,
-          lineHeight: 1.1,
+          letterSpacing: '2px', // Slight spacing for elegant serif
+          lineHeight: 1,
           color: 'var(--color-primary)',
-          marginBottom: '2rem',
+          marginBottom: '1.5rem',
           maxWidth: '1200px',
-          margin: '0 auto 2rem'
+          margin: '0 auto 1.5rem',
+          textTransform: 'capitalize'
         }}>
-          Building digital experiences<br/>that feel alive.
+          Sumit Vishnu
         </h1>
 
         <p className="hero-content-elem" style={{
@@ -258,7 +301,7 @@ export default function Hero() {
           opacity: 0.8,
           lineHeight: 1.6
         }}>
-          Full-Stack Developer focused on building modern web applications, startup products, and immersive digital experiences.
+          Building digital experiences that feel alive. Focused on modern web applications, startup products, and immersive digital experiences.
         </p>
 
         <div className="hero-content-elem" style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
